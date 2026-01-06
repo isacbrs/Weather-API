@@ -21,12 +21,18 @@ def get_weather(city: str = Query(..., example="São Paulo")):
 
     if response.status_code != 200:
         raise HTTPException(status_code=404, detail=response.text)
+    
+    if response.status_code == 500:
+        raise HTTPException(
+        status_code=503,
+        detail="Weather service unavailable"
+    )
 
     data = response.json()
 
     return {
-        "city": data["resolvedAddress"],
-        "temperature": data["currentConditions"]["temp"],
-        "humidity": data["currentConditions"]["humidity"],
-        "description": data["currentConditions"]["conditions"]
-    }
+        "city": str(data["resolvedAddress"]),
+        "temperature": float(data["currentConditions"]["temp"]),
+        "humidity": float(data["currentConditions"]["humidity"]),
+        "description": str(data["currentConditions"]["conditions"])
+    }   
