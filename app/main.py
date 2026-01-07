@@ -20,13 +20,14 @@ def get_weather(city: str = Query(..., example="São Paulo")):
     response = requests.get(url)
 
     if response.status_code != 200:
-        raise HTTPException(status_code=404, detail=response.text)
-    
-    if response.status_code == 500:
         raise HTTPException(
-        status_code=503,
-        detail="Weather service unavailable"
-    )
+        status_code=404, 
+        detail="City not found or weather service unavailable. Please confirm the city name and try again.")
+    
+    if not city or len(city) > 3:
+        raise HTTPException(
+            status_code=400,
+            detail ="Invalid city name")
 
     data = response.json()
 
