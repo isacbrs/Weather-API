@@ -62,7 +62,7 @@ WEATHER_API_KEY=your_api_key_here
 ## Running the API
 
 ```bash
-uvicorn main:app --reload
+uvicorn app.main:app --reload
 ```
 
 The API will be available at:
